@@ -7,7 +7,13 @@ pipeline {
                 docker { image 'node:16-alpine' }
             }
             steps {
-                sh "npm -v"
+                echo "Building the Typescript code"
+                sh "npm install"
+                sh "npm run build"
+                echo "Runs the lint"
+                sh "npm run lint"
+                echo "Runs the Typescript code"
+                sh "npm t"
             }
         }
         
