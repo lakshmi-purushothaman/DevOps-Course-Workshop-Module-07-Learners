@@ -15,12 +15,23 @@ jobs:
     - name: Build the application
       run: |
         dotnet build
+    
+    - name: Run the tests
+      run: | 
+        dotnet test
+
+    - name: Builds the Typescript code
+      run: | 
         npm install
         npm run build
-    
-    - name: Run the application
+
+    - name: Runs the lint
       run: | 
-        dotnet run
+        npm run lint
+    
+    - name: Runs the Typescript code
+      run: | 
+        npm t
 
     - name: Hello world
       uses: actions/hello-world-javascript-action@v1.1 # Name of the action. This uses https://github.com/actions/hello-world-javascript-action
