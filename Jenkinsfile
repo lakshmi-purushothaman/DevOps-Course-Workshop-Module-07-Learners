@@ -1,17 +1,24 @@
 pipeline {
-    agent any
+    agent none
 
     stages {
+        stage('npm commands') {
+            agent {
+                docker { image 'node:16-alpine' }
+            }
+            steps {
+                sh "npm -v"
+            }
+        }
+        
         stage('Build') {
             steps {
                 echo 'Build the application'
-                dotnet build
             }
         }
         stage('Test') {
             steps {
                 echo 'Run the tests'
-                dotnet test
             }
         }
         stage('Deploy') {
