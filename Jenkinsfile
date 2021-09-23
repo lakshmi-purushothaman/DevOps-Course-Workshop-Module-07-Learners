@@ -9,14 +9,14 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/DotnetTemplate.Web"){
                     sh "pwd"
+                    echo "Building the Typescript code"
+                    sh "npm install"
+                    sh "npm run build"
+                    echo "Runs the lint"
+                    sh "npm run lint"
+                    echo "Runs the Typescript code"
+                    sh "npm t"
                 }
-                echo "Building the Typescript code"
-                sh "npm install"
-                sh "npm run build"
-                echo "Runs the lint"
-                sh "npm run lint"
-                echo "Runs the Typescript code"
-                sh "npm t"
             }
         }
         
