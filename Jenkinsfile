@@ -7,6 +7,9 @@ pipeline {
                 docker { image 'node:16-alpine' }
             }
             steps {
+                dir("${env.WORKSPACE}/DotnetTemplate.Web"){
+                    sh "pwd"
+                }
                 echo "Building the Typescript code"
                 sh "npm install"
                 sh "npm run build"
