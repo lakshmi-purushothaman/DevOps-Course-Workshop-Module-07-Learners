@@ -33,7 +33,14 @@ jobs:
     - name: Runs the Typescript code
       run: | 
         npm t
-
+    - name: Publish to Docker Hub
+      uses: docker/build-push-action@v1
+      with: 
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: dotnettemplate/next
+        tags: latest, ${{ github.run_number }}
+        
     - name: Hello world
       uses: actions/hello-world-javascript-action@v1.1 # Name of the action. This uses https://github.com/actions/hello-world-javascript-action
       with:                                            # This section is needed if you need to pass arguments to the action

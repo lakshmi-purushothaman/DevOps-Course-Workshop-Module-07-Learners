@@ -19,6 +19,21 @@ pipeline {
                 }
             }
         }
+
+        stage('dotnet commands') {
+            agent {
+                docker { image 'dotnet/sdk' }
+            }
+            steps {
+                dir("${env.WORKSPACE}/DotnetTemplate.Web"){
+                    sh "pwd"
+                    echo "Build the application"
+                    sh "dotnet build"
+                    echo "Run the tests"
+                    sh "dotnet test"
+                }
+            }
+        }
         
         stage('Build') {
             steps {
