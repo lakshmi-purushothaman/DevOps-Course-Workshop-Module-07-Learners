@@ -46,14 +46,15 @@ jobs:
       run:
         working-directory: .
     needs: build
+    if: github.ref == 'refs/heads/main'
     steps:
     - name: Ckeckout the code
       uses: actions/checkout@v2 # Adds a step to checkout the repository code
-      
+
     - name: Publish to Docker Hub
       uses: docker/build-push-action@v1
       with: 
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: dotnettemplate/next
+        repository: lakshmips/dotnettemplate
         tags: latest, ${{ github.run_number }}
