@@ -47,6 +47,9 @@ jobs:
         working-directory: .
     needs: build
     steps:
+    - name: Ckeckout the code
+      uses: actions/checkout@v2 # Adds a step to checkout the repository code
+      
     - name: Publish to Docker Hub
       uses: docker/build-push-action@v1
       with: 
