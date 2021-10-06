@@ -58,3 +58,22 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: lakshmips/dotnettemplate
         tags: latest, ${{ github.run_number }}
+
+  herokupush:
+    name: Build and push to Heroku
+    runs-on: ubuntu-latest      # Sets the build environment a machine with the latest Ubuntu installed
+    defaults:
+      run:
+        working-directory: .
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Ckeckout the code
+      uses: actions/checkout@v2 # Adds a step to checkout the repository code
+
+    - name: Publish to Heroku
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "module07-dotnetapp" #Must be unique in Heroku
+          heroku_email: "lakshmi.purushothamk@gmail.com"

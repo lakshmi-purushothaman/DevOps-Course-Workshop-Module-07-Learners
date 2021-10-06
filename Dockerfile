@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
 USER root
 
@@ -6,16 +6,31 @@ USER root
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
 
-WORKDIR /app
+WORKDIR /source
 
-COPY . /app
+COPY . /source
 
 # Build the app
-RUN dotnet build
+#RUN dotnet build
 
-WORKDIR /app/DotnetTemplate.Web
+#WORKDIR /source/DotnetTemplate.Web
 
-RUN npm install
-RUN npm run build
+#RUN npm install
+#RUN npm run build
 
-ENTRYPOINT [ "dotnet","run" ]
+# copy csproj and restore as distinct layers
+#COPY *.sln .
+COPY DotnetTemplate.Web/*.csproj ./DotnetTemplate.Web/
+RUN dotnet restore
+
+# copy everything else and build app
+COPY DotnetTemplate.Web/. ./DotnetTemplate.Web/
+WORKDIR /source/DotnetTemplate.Web
+RUN dotnet publish -c release -o /app
+
+#Final Image
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+WORKDIR /app
+COPY --from=build /app ./
+
+ENTRYPOINT [ "dotnet","DotnetTemplate.Web.dll" ]
